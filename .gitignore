@@ -161,3 +161,8 @@ cython_debug/
 
 #API KEY
 *.key
+
+# lock and swap files
+.~lock.*
+*.swap
+*.swp
