@@ -127,6 +127,7 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+.idea/
 
 # Spyder project settings
 .spyderproject
@@ -161,3 +162,8 @@ cython_debug/
 
 #API KEY
 *.key
+
+# lock and swap files
+.~lock.*
+*.swap
+*.swp
