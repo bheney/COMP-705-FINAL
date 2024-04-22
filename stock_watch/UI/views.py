@@ -2,6 +2,9 @@ from django.shortcuts import render
 from .models import User, WatchList, Stock
 # Create your views here.
 
+def home(request):
+    return render(request, 'home.html', {})
+
 def user_watchlists(request):
     # Assuming you have a way to identify the logged-in user, for example using Django's authentication system
     user = User.objects.get(id=request.user.id)
