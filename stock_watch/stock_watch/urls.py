@@ -17,10 +17,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from . import views
-from .views import WatchListEdit
+from .views import WatchListView, StockView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path(route='', view=views.Home.as_view(), name='home'),
-    path('watchlist/<int:pk>/', WatchListEdit.as_view(), name='watchlist_edit')
+    path('watchlist/<int:pk>/', WatchListView.as_view(), name='watchlist_edit'),
+    path('stock/<int:pk>/', StockView.as_view(), name='watchlist_edit'),
 ]
