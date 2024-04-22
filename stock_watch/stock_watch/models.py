@@ -5,8 +5,8 @@ from django.contrib.auth.models import User
 
 class Stock(models.Model):
     symbol = models.CharField(max_length=settings.MAX_SYMBOL_LENGTH)
-    name = models.CharField()
-    exchange = models.CharField()
+    name = models.CharField(max_length=256)
+    exchange = models.CharField(max_length=256)
     last_refresh = models.DateTimeField()
 
     def __eq__(self, other):
@@ -22,7 +22,7 @@ class Stock(models.Model):
 
 
 class WatchList(models.Model):
-    title = models.CharField()
+    title = models.CharField(max_length=256)
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
     stocks = models.ManyToManyField(Stock)
     created_at = models.DateTimeField(auto_now_add=True)
