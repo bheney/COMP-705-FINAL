@@ -42,11 +42,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-<<<<<<< HEAD:stock_watch/stock_watch/settings.py
-    'stock_watch'
-=======
+    'stock_watch',
     'UI'
->>>>>>> 0044a93dd79861078ca51f4ad29a50e6ced7ffed:stock_watch/settings.py
 ]
 
 MIDDLEWARE = [
