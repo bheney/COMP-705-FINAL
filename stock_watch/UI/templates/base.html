@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Watchlist</title>
+</head>
+<body>
+    <h1>Welcome, {{ user.first_name }}!</h1>
+
+    <h2>Your Watchlists:</h2>
+    <ul>
+        {% for watchlist in user.watchlists %}
+            <li>{{ watchlist.title }}</li>
+            <ul>
+                {% for stock in watchlist.stocks %}
+                    <li>{{ stock.symbol }} - {{ stock.name }}</li>
+                {% endfor %}
+            </ul>
+        {% endfor %}
+    </ul>
+
+    <h2>Add New Watchlist:</h2>
+    <form method="post" action="{% url 'add_watchlist' %}">
+        {% csrf_token %}
+        <label for="title">Title:</label>
+        <input type="text" id="title" name="title" required>
+        <button type="submit">Add Watchlist</button>
+    </form>
+</body>
+</html>
