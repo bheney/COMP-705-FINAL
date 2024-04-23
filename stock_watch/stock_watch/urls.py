@@ -15,6 +15,17 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+<<<<<<< HEAD:stock_watch/stock_watch/urls.py
+from django.urls import path
+from . import views
+from .views import WatchListView, StockView
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path(route='', view=views.Home.as_view(), name='home'),
+    path('watchlist/<int:pk>/', WatchListView.as_view(), name='watchlist_edit'),
+    path('stock/<int:pk>/', StockView.as_view(), name='watchlist_edit'),
+=======
 from django.urls import path, include
 
 
@@ -22,5 +33,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path("", include("UI.urls")),
     
+>>>>>>> 0044a93dd79861078ca51f4ad29a50e6ced7ffed:stock_watch/urls.py
 ]
 

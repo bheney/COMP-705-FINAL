@@ -13,6 +13,9 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 import os
 from pathlib import Path
 from decouple import config
+import datetime
+import pytz
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -39,7 +42,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+<<<<<<< HEAD:stock_watch/stock_watch/settings.py
+    'stock_watch'
+=======
     'UI'
+>>>>>>> 0044a93dd79861078ca51f4ad29a50e6ced7ffed:stock_watch/settings.py
 ]
 
 MIDDLEWARE = [
@@ -57,7 +64,7 @@ ROOT_URLCONF = 'stock_watch.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -108,7 +115,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/New_York'
 
 USE_I18N = True
 
@@ -128,3 +135,9 @@ STATIC_DIRS = [
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Runtime Settings
+MAX_SYMBOL_LENGTH = 5
+REFRESH_INTERVAL = 40.5
+OPEN = datetime.time(hour=9, minute=30, tzinfo=pytz.timezone(TIME_ZONE))
+CLOSE = datetime.time(hour=16, tzinfo=pytz.timezone(TIME_ZONE))
