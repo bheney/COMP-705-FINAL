@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from .models import User, WatchList, Stock
+
 # Create your views here.
 
 def home(request):
