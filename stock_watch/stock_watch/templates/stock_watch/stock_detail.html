@@ -1,0 +1,49 @@
+<!-- watchlist_edit.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{object.symbol}} Details</title>
+</head>
+<body>
+    <h1>{{object.symbol}} Details</h1>
+    <p>Name: {{object.name}}</p>
+    <p>Exchange: {{object.exchange}}</p>
+    <p>Last Refresh: {{object.last_refresh}}
+<!-- Chart container -->
+    <canvas id="priceChart" width="400" height="200"></canvas>
+
+    <script>
+        // Fetch price data from your backend and populate the chart
+        // Replace this with actual price data retrieval logic
+        var priceData = {{ price_list|safe }}; // Sample data
+        var timestampData = {{timestamp_list|safe }};
+
+        var ctx = document.getElementById('priceChart').getContext('2d');
+        var priceChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: timestampData,
+                datasets: [{
+                    label: 'Price',
+                    data: priceData,
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+    </script>
+</body>
+</html>
