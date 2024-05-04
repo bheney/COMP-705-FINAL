@@ -16,7 +16,7 @@
     <canvas id="priceChart" width="400" height="200"></canvas>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    :<script>
+    <script>
         // Fetch price data from your backend and populate the chart
         var priceData = {{ price_list|safe }};
         var timestampData = {{timestamp_list|safe }};
