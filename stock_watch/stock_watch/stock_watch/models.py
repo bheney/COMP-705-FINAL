@@ -35,7 +35,7 @@ class Stock(models.Model):
         data = data.order_by('time')
         for datum in data:
             price_list.append(datum.price)
-            timestamp_list.append(datum.time)
+            timestamp_list.append(datum.iso_time)
         return price_list, timestamp_list
 
 
@@ -60,3 +60,8 @@ class PriceData(models.Model):
             # If entry does not exist, create a new one
             new_entry = cls(stock=stock, price=price, time=time)
             new_entry.save()
+
+    @property
+    def iso_time(self):
+        py_time = datetime.datetime.strptime(self.time.__str__(), "%Y-%m-%d %H:%M:%S%z")
+        return py_time.replace(tzinfo=None).isoformat()

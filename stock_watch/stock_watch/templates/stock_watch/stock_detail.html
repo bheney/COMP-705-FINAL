@@ -11,14 +11,14 @@
     <h1>{{object.symbol}} Details</h1>
     <p>Name: {{object.name}}</p>
     <p>Exchange: {{object.exchange}}</p>
-    <p>Last Refresh: {{object.last_refresh}}
+    <p>Last Refresh: {{object.last_refresh}}</p>
 <!-- Chart container -->
     <canvas id="priceChart" width="400" height="200"></canvas>
 
-    <script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    :<script>
         // Fetch price data from your backend and populate the chart
-        // Replace this with actual price data retrieval logic
-        var priceData = {{ price_list|safe }}; // Sample data
+        var priceData = {{ price_list|safe }};
         var timestampData = {{timestamp_list|safe }};
 
         var ctx = document.getElementById('priceChart').getContext('2d');
