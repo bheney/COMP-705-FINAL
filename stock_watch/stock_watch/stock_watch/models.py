@@ -25,7 +25,7 @@ class Stock(models.Model):
         # TODO: Set up logging/error management for the API calls
         new_data = self.api.get_latest_price_history(symbol=self.symbol, interval=settings.API_MIN_RESOLUTION)
         for (time, price) in new_data:
-            PriceData.add(self.symbol, price, time)
+            PriceData.add(self, price, time)
         self.last_refresh = datetime.datetime.now()
 
     def get_chart_data(self):
@@ -35,7 +35,7 @@ class Stock(models.Model):
         data = data.order_by('time')
         for datum in data:
             price_list.append(datum.price)
-            timestamp_list.append(datum.timestamp)
+            timestamp_list.append(datum.time)
         return price_list, timestamp_list
 
 

@@ -11,9 +11,10 @@ Run the following commands in a new python environment:
 pip install django
 pip install python-decouple
 pip install pytz
-python3 stock_watch/manage.py makemigrations
-python3 stock_watch/manage.py migrate
-python3 stock_watch/manage.py runserver
+pip install twelvedata
+python3 stock_watch/stock_watch/manage.py makemigrations
+python3 stock_wathc/stock_watch/manage.py migrate
+python3 stock_watch/stock_watch/manage.py runserver
 ```
 
 

@@ -25,7 +25,7 @@ class StockView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         stock = self.object  # Retrieve the Stock object
-        stock.update() # TODO: This needs to be handled by a backend thread
+        stock.update()  # TODO: This needs to be handled by a backend thread
         price_list, timestamp_list = stock.get_chart_data()
         context['price_list'] = price_list
         context['timestamp_list'] = timestamp_list
