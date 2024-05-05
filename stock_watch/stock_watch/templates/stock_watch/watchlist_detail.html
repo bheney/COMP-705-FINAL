@@ -6,15 +6,15 @@
 <table>
         <thead>
             <tr>
-                <th>Name</th>
                 <th>Symbol</th>
+                <th>Name</th>
                 <th>Remove</th>
             </tr>
         </thead>
         <tbody>
             {% for stock in object.stocks.all %}
                 <tr>
-                    <td>{{ stock.symbol }}</td>
+                    <td><a href="{% url 'stock_detail' stock.id %}">{{ stock.symbol }}</td>
                     <td>{{ stock.name }}</td>
                     <td>❌</td>
                 </tr>
