@@ -1,13 +1,6 @@
 <!-- watchlist_edit.html -->
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit {{object.title}}</title>
-</head>
-<body>
+{%  extends 'base.html' %}
+{% block content %}
     <h1>Edit {{object.title}}</h1>
     <h2>Stocks:</h2>
 <table>
@@ -21,8 +14,8 @@
         <tbody>
             {% for stock in object.stocks.all %}
                 <tr>
-                    <td>{{ stock.name }}</td>
                     <td>{{ stock.symbol }}</td>
+                    <td>{{ stock.name }}</td>
                     <td>❌</td>
                 </tr>
             {% endfor %}
@@ -31,5 +24,4 @@
     <p>Created at: {{ object.created_at }}</p>
     <p>Last updated: {{ object.updated_at }}</p>
 
-</body>
-</html>
+{% endblock %}
