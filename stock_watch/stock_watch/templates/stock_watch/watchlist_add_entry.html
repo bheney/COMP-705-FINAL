@@ -1,0 +1,38 @@
+<!-- watchlist_add_entry.html -->
+<form id="addStockForm" method="post" onsubmit="submitForm(event, {{ list }})">
+    {% csrf_token %}
+    {{ form.stock }}
+    <button type="submit">Add</button>
+</form>
+
+<script>
+function submitForm(event, list) {
+    event.preventDefault();  // Prevent default form submission
+    const form = document.getElementById('addStockForm');
+    const selectedOption = form.elements['stock'].options[form.elements['stock'].selectedIndex];
+    const selectedStockPk = selectedOption.value;  // Extract selected stock PK
+    let url = "{% url 'add_stock' %}?list=" + list + "&stock=" + selectedStockPk;
+    form.action = url;  // Set the form's action attribute
+
+    // Submit the form using AJAX
+    fetch(url, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: {
+            'X-CSRFToken': '{{ csrf_token }}',
+        },
+    })
+    .then(response => {
+        if (response.ok) {
+            // Close the popup window upon successful form submission
+            window.close();
+        } else {
+            // Handle error response here
+            console.error('Error:', response.statusText);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
+</script>
