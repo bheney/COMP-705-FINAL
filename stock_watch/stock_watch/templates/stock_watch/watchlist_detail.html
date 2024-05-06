@@ -1,7 +1,21 @@
 {% extends 'base.html' %}
 {% block header %}
-    {% load static %}
-    <script src="{% static 'stock_watch/scripts.js' %}" defer></script>
+    <script>
+        function popupRemoveStockFromWatchlist(list_pk, stock_pk) {
+            // Construct the URL by name and pass the path parameters as arguments
+            var url = "{% url 'confirm_remove_stock' 0 0 %}";
+            url = url.replace('0', list_pk);
+            url = url.replace('0', stock_pk);
+
+            // Open the window with the constructed URL
+            window.open(
+                url,
+                'Delete ' + stock_pk,
+                'width=400,height=400'
+            );
+        }
+    </script>
+
 {% endblock %}
 {% block content %}
     <h1>Edit {{ object.title }}</h1>
@@ -20,7 +34,7 @@
                     <td><a href="{% url 'stock_detail' stock.id %}">{{ stock.symbol }}</a></td>
                     <td>{{ stock.name }}</td>
                     <td>
-                        <button class="remove-btn" onclick="openConfirmation('{{ stock.symbol }}', '{{ stock.name }}', '{{ object.title }}', '{% url 'remove_stock' %}')">❌</button>
+                        <button class="remove-btn" onclick="popupRemoveStockFromWatchlist('{{ object.pk }}', '{{ stock.pk }}')">❌</button>
                     </td>
                 </tr>
             {% endfor %}

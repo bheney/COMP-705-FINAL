@@ -25,9 +25,10 @@ urlpatterns = [
     path(route='', view=views.Home.as_view(), name='home'),
     path('watchlist/<int:pk>/', WatchListView.as_view(), name='watchlist_edit'),
     path('stock/<int:pk>/', StockView.as_view(), name='stock_detail'),
-    path("", include("UI.urls")),
+    path('confirm_stock_delete/<int:watchlist_pk>/<int:stock_pk>', views.WatchlistRemoveEntry.as_view(), name='confirm_remove_stock'),
+    path('close_popup/', views.close_popup, name='close_popup'),
 
     # Internal API
-    path('remove_stock/', views.WatchList.remove_stock, name='remove_stock'),
+    path('api/remove_stock/', views.WatchListAPI.as_view(), name='remove_stock'),
 ]
 

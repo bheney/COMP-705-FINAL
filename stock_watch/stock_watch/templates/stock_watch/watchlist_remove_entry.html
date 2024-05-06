@@ -1,0 +1,51 @@
+<!-- confirm_remove_stock.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmation</title>
+</head>
+<body>
+    <h1>Confirmation</h1>
+    <p>Are you sure you want to remove {{ stock.name }} from {{ list.name }}?</p>
+    <button id="confirm-remove">Yes, Remove</button>
+    <button id="cancel">Cancel</button>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Click event handler for the "Yes, Remove" button
+            document.getElementById('confirm-remove').addEventListener('click', function() {
+                // Create a new XMLHttpRequest object
+                var xhr = new XMLHttpRequest();
+                let url = "{% url 'confirm_remove_stock' 0 0 %}";
+                url = url.replace("0", {{ list.pk }});
+                url = url.replace("0", {{ stock.pk }});
+                xhr.open('POST', url, true);
+                xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+                xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+
+                // Handle response
+                xhr.onload = function() {
+                    if (xhr.status === 200) {
+                        // Redirect or close popup after successful removal
+                        window.location.href = "{% url 'close_popup' %}";
+                    } else {
+                        // Handle errors
+                        console.error("Error:", xhr.statusText);
+                    }
+                };
+
+                // Send the request
+                xhr.send();
+            });
+
+            // Click event handler for the "Cancel" button
+            document.getElementById('cancel').addEventListener('click', function() {
+                // Close the popup
+                window.close();
+            });
+        });
+    </script>
+</body>
+</html>
