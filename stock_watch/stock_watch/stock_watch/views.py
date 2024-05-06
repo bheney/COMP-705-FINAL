@@ -1,10 +1,12 @@
+from enum import Enum
+
 from django.views import View
 from django.views.generic.base import TemplateView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import DeleteView
 from django.urls import reverse_lazy
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 
 from stock_watch.models import WatchList, Stock
 
@@ -35,27 +37,22 @@ class WatchlistRemoveEntry(View):
         # Render the confirmation page with context
         return render(request, self.template_name, {'stock': stock, 'list': watchlist})
 
-class WatchListAPI(View):
-    @staticmethod
-    def remove_stock(request):
-        # Get the watchlist_id and stock_id from the query parameters
-        watchlist_id = request.GET.get('watchlist_id')
-        stock_id = request.GET.get('stock_id')
+class WatchListAPI:
+    class RemoveStockFromWatchlist(View):
+        def post(self, request):
+            try:
+                # Retrieve the watchlist and stock objects
+                watchlist = WatchList.objects.get(pk=request.GET.get('list'))
+                stock = Stock.objects.get(pk=request.GET.get('stock'))
 
-        # Perform any necessary validation or processing
-        if watchlist_id is None or stock_id is None:
-            # Handle missing parameters
-            return redirect('error_page')
+                # Remove the stock from the watchlist
+                watchlist.stocks.remove(stock)
 
-        # Retrieve the watchlist and stock objects
-        watchlist = get_object_or_404(WatchList, pk=watchlist_id)
-        stock = get_object_or_404(Stock, pk=stock_id)
-
-        # Perform the remove action
-        watchlist.stocks.remove(stock)
-
-        # Redirect to a success URL (e.g., a page showing the updated watchlist)
-        return redirect('watchlist_detail', pk=watchlist_id)
+                # Return a success JSON response
+                return JsonResponse({'success': True})
+            except Exception as e:
+                # Return an error JSON response
+                return JsonResponse({'success': False, 'error': str(e)})
 
 
 

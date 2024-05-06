@@ -8,7 +8,7 @@
 </head>
 <body>
     <h1>Confirmation</h1>
-    <p>Are you sure you want to remove {{ stock.name }} from {{ list.name }}?</p>
+    <p>Are you sure you want to remove {{ stock.name }} from {{ list.title }}?</p>
     <button id="confirm-remove">Yes, Remove</button>
     <button id="cancel">Cancel</button>
 
@@ -18,9 +18,7 @@
             document.getElementById('confirm-remove').addEventListener('click', function() {
                 // Create a new XMLHttpRequest object
                 var xhr = new XMLHttpRequest();
-                let url = "{% url 'confirm_remove_stock' 0 0 %}";
-                url = url.replace("0", {{ list.pk }});
-                url = url.replace("0", {{ stock.pk }});
+                let url = "{% url 'remove_stock' %}?list=" + {{ list.pk }} + "&stock=" + {{ stock.pk }};
                 xhr.open('POST', url, true);
                 xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
                 xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");

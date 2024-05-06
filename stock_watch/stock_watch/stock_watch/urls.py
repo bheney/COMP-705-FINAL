@@ -29,6 +29,6 @@ urlpatterns = [
     path('close_popup/', views.close_popup, name='close_popup'),
 
     # Internal API
-    path('api/remove_stock/', views.WatchListAPI.as_view(), name='remove_stock'),
+    path('api/remove_stock/', views.WatchListAPI.RemoveStockFromWatchlist.as_view(), name='remove_stock'),
 ]
 
