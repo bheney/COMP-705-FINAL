@@ -15,11 +15,15 @@ class Stock(models.Model):
     api.set_api_key(config("TWELVE_DATA_API_KEY"))
 
     def __eq__(self, other):
-        if other is Stock:
+        if isinstance(other, Stock):
             return self.symbol == other.symbol
-        if other is str:
+        elif isinstance(other, str):
             return self.symbol == other
-        raise TypeError("Equality for class Stock is only defined for other Stocks and strings")
+        else:
+            return NotImplemented
+
+    def __str__(self):
+        return self.symbol
 
     def update(self):
         # TODO: Set up logging/error management for the API calls
@@ -46,6 +50,16 @@ class WatchList(models.Model):
     stocks = models.ManyToManyField(Stock)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def add_stock(self, stock):
+        # Check if the stock is already in the watchlist
+        if not self.stocks.filter(pk=stock.pk).exists():
+            # Add the stock to the watchlist
+            self.stocks.add(stock)
+    def remove_stock(self, stock):
+        if self.stocks.filter(pk=stock.pk).exists():
+            # Add the stock to the watchlist
+            self.stocks.remove(stock)
 
 class PriceData(models.Model):
     stock = models.ForeignKey(Stock, on_delete=models.CASCADE)

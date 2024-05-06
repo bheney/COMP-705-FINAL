@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'stock_watch',
-    'UI'
+    'UI',
 ]
 
 MIDDLEWARE = [
@@ -125,7 +125,7 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 STATIC_DIRS = [
-    os.path.join(BASE_DIR, 'UI/static'),
+    os.path.join(BASE_DIR, 'stock_watch/static'),
 ]
 
 # Default primary key field type
