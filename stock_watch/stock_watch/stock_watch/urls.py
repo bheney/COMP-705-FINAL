@@ -20,10 +20,14 @@ from . import views
 from .views import WatchListView, StockView
 
 urlpatterns = [
+    # Page Views
     path('admin/', admin.site.urls),
     path(route='', view=views.Home.as_view(), name='home'),
     path('watchlist/<int:pk>/', WatchListView.as_view(), name='watchlist_edit'),
     path('stock/<int:pk>/', StockView.as_view(), name='stock_detail'),
     path("", include("UI.urls")),
+
+    # Internal API
+    path('remove_stock/', views.WatchList.remove_stock, name='remove_stock'),
 ]
 

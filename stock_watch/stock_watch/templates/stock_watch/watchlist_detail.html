@@ -1,9 +1,12 @@
-<!-- watchlist_edit.html -->
-{%  extends 'base.html' %}
+{% extends 'base.html' %}
+{% block header %}
+    {% load static %}
+    <script src="{% static 'stock_watch/scripts.js' %}" defer></script>
+{% endblock %}
 {% block content %}
-    <h1>Edit {{object.title}}</h1>
+    <h1>Edit {{ object.title }}</h1>
     <h2>Stocks:</h2>
-<table>
+    <table>
         <thead>
             <tr>
                 <th>Symbol</th>
@@ -14,14 +17,16 @@
         <tbody>
             {% for stock in object.stocks.all %}
                 <tr>
-                    <td><a href="{% url 'stock_detail' stock.id %}">{{ stock.symbol }}</td>
+                    <td><a href="{% url 'stock_detail' stock.id %}">{{ stock.symbol }}</a></td>
                     <td>{{ stock.name }}</td>
-                    <td>❌</td>
+                    <td>
+                        <button class="remove-btn" onclick="openConfirmation('{{ stock.symbol }}', '{{ stock.name }}', '{{ object.title }}', '{% url 'remove_stock' %}')">❌</button>
+                    </td>
                 </tr>
             {% endfor %}
         </tbody>
     </table>
     <p>Created at: {{ object.created_at }}</p>
     <p>Last updated: {{ object.updated_at }}</p>
-
 {% endblock %}
+

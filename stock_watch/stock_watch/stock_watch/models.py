@@ -47,6 +47,16 @@ class WatchList(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    def add_stock(self, stock):
+        # Check if the stock is already in the watchlist
+        if not self.stocks.filter(pk=stock.pk).exists():
+            # Add the stock to the watchlist
+            self.stocks.add(stock)
+    def remove_stock(self, stock):
+        if self.stocks.filter(pk=stock.pk).exists():
+            # Add the stock to the watchlist
+            self.stocks.remove(stock)
+
 class PriceData(models.Model):
     stock = models.ForeignKey(Stock, on_delete=models.CASCADE)
     price = models.FloatField()
