@@ -2,7 +2,8 @@ from django.views.generic.base import TemplateView
 from django.views.generic.detail import DetailView
 
 from stock_watch.models import WatchList, Stock
-
+from django.shortcuts import render
+from django.conf import settings
 
 class Home(TemplateView):
     template_name = 'stock_watch/home.html'
@@ -25,3 +26,6 @@ class StockView(DetailView):
         context = super().get_context_data(**kwargs)
         stock = self.object  # Retrieve the WatchList object
         return context
+
+def index(request):
+    return render(request, 'index.html', {'TWELVE_DATA_API_KEY': settings.TWELVE_DATA_API_KEY})
