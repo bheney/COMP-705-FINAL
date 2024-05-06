@@ -1,17 +1,17 @@
 import datetime
-from enum import Enum
 
 from django.views import View
 from django.views.generic.base import TemplateView
 from django.views.generic.detail import DetailView
-from django.views.generic.edit import DeleteView
+
 from django.urls import reverse_lazy
-from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, JsonResponse
 
 from stock_watch.models import WatchList, Stock
 from stock_watch.forms import AddNewStockToWatchlist
 
+from django.shortcuts import render
+from django.conf import settings
 
 class Home(TemplateView):
     template_name = 'stock_watch/home.html'
@@ -109,6 +109,9 @@ class StockView(DetailView):
         context['price_list'] = price_list
         context['timestamp_list'] = timestamp_list
         return context
+
+def index(request):
+    return render(request, 'index.html', {'TWELVE_DATA_API_KEY': settings.TWELVE_DATA_API_KEY})
 
 
 def close_popup(request):
