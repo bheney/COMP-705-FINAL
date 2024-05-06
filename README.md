@@ -1,3 +1,26 @@
+# Use And Installation
+Create stock_watch/.env file with the following contents:
+```text
+DJANGO_SECRET_KEY = '<your-django-secret-key-here>'
+TWELVE_DATA_API_KEY = '<your-twelve-data-api-key-here>'
+```
+Replace the bracketed text with your keys.
+
+Run the following commands in a new python environment:
+```shell
+pip install django
+pip install python-decouple
+pip install pytz
+pip install twelvedata
+python3 stock_watch/stock_watch/manage.py makemigrations
+python3 stock_wathc/stock_watch/manage.py migrate
+python3 stock_watch/stock_watch/manage.py runserver
+```
+
+
+
+Nex
+
 # Spring 2024
 # Full Stack Development Project
 
