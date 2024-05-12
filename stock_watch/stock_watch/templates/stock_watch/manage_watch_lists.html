@@ -1,10 +1,55 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
+{% block header %}
+    <script>
+        function popupRemoveWatchlistFromUser(user_pk, list_pk) {
+            // Construct the URL by name and pass the path parameters as arguments
+            var url = "{% url 'confirm_remove_watchlist' 0 0 %}";
+            url = url.replace('0', user_pk);
+            url = url.replace('0', list_pk);
 
-</body>
-</html>
+            // Open the window with the constructed URL
+            window.open(
+                url,
+                'Delete ' + list_pk,
+                'width=400,height=400'
+            );
+        }
+
+        function popupAddWatchlistToUser(list_pk) {
+            let url = "{% url 'add_new_watchlist' 0 %}";
+            url = url.replace('0', list_pk)
+            window.open(
+                url,
+                'Add'
+                'width=400,height=400'
+            );
+        }
+    </script>
+
+{% endblock %}
+{% block content %}
+    <h1>Edit {{ object.title }}</h1>
+    <h2>WatchLists:</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Created</th>
+                <th>Remove</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for list in object.lists.all %}
+                <tr>
+                    <td><a href="{% url 'watchlist_detail' list.id %}">{{ list.name }}</a></td>
+                    <td>{{ list.created }}</td>
+                    <td>
+                        <button class="remove-btn" onclick="popupRemoveWatchlistFromUser('{{ object.pk }}', '{{ list.pk }}')">❌</button>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <button class="add-btn" onclick="popupAddWatchlistToUser('{{ object.pk }}')">New WatchList</button>
+    <p>User since: {{ object.created_at }}</p>
+{% endblock %}
