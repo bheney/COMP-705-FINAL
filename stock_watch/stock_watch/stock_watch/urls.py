@@ -27,6 +27,7 @@ urlpatterns = [
     path('confirm_stock_delete/<int:watchlist_pk>/<int:stock_pk>', views.WatchlistRemoveEntry.as_view(), name='confirm_remove_stock'),
     path('add_new_stock/<int:watchlist_pk>', views.WatchlistAddEntry.as_view() ,name='add_new_stock'),
     path('close_popup/', views.close_popup, name='close_popup'),
+    path('watchlists/<int:pk>/', views.UserWatchListsView.as_view(), name='')
 
     # Internal API
     path('api/remove_stock/', views.WatchListAPI.RemoveStockFromWatchlist.as_view(), name='remove_stock'),

@@ -27,6 +27,15 @@ class WatchListView(DetailView):
         context['stocks'] = stocks  # Add stocks to the context
         return context
 
+class UserWatchListsView(DetailView):
+    model = WatchList
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        watchlist = self.object  # Retrieve the WatchList object
+        stocks = watchlist.stocks.all()  # Retrieve all related stocks
+        context['stocks'] = stocks  # Add stocks to the context
+        return context
 
 class WatchlistRemoveEntry(View):
     template_name = 'stock_watch/watchlist_remove_entry.html'
