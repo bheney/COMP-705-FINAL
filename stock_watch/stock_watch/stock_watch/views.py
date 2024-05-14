@@ -22,9 +22,15 @@ class Home(TemplateView):
     template_name = 'stock_watch/home.html'
 
 
-class WatchListView(LoginRequiredMixin, ListView):
+class WatchListView(DetailView):
     model = WatchList
     template_name = 'stock_watch/watchlist_detail.html'
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        watchlist = self.object  # Retrieve the WatchList object
+        stocks = watchlist.stocks.all()  # Retrieve all related stocks
+        context['stocks'] = stocks  # Add stocks to the context
+        return context
 
 class UserWatchListsView(DetailView):
     model = User
