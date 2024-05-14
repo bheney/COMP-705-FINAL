@@ -1,14 +1,20 @@
 import datetime
 
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.models import User
 from django.views import View
+from django.views.generic import ListView
 from django.views.generic.base import TemplateView
 from django.views.generic.detail import DetailView
+from django.views.generic.edit import DeleteView
 
 from django.urls import reverse_lazy
 from django.http import HttpResponse, JsonResponse
+from django.utils import timezone
 
 from stock_watch.models import WatchList, Stock
-from stock_watch.forms import AddNewStockToWatchlist
+from stock_watch.forms import AddNewStockToWatchlist, AddNewWatchList
+from stock_watch.serializers import WatchListSerializer
 
 from django.shortcuts import render
 from django.conf import settings
@@ -19,7 +25,7 @@ class Home(TemplateView):
 
 class WatchListView(DetailView):
     model = WatchList
-
+    template_name = 'stock_watch/watchlist_detail.html'
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         watchlist = self.object  # Retrieve the WatchList object
@@ -27,6 +33,47 @@ class WatchListView(DetailView):
         context['stocks'] = stocks  # Add stocks to the context
         return context
 
+class UserWatchListsView(DetailView):
+    model = User
+    template_name = 'stock_watch/manage_watch_lists.html'
+
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        watchlists = WatchList.objects.filter(user_id=self.object.pk)  # Retrieve the WatchList object
+        context['watchlists'] = watchlists
+        context['user'] = self.object
+        return context
+
+
+class RemoveWatchList(DeleteView):
+    model = WatchList
+    template_name = 'stock_watch/remove_watchlist.html'
+    success_url = reverse_lazy('close_popup')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['list'] = self.object  # Pass the instance being deleted to the template
+        return context
+
+
+from django.views.generic import CreateView
+from django.urls import reverse_lazy
+from .forms import AddNewWatchList
+
+class AddWatchList(CreateView):
+    model = WatchList
+    form_class = AddNewWatchList
+    template_name = 'stock_watch/add_watchlist.html'
+    success_url = reverse_lazy('close_popup')
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user_instance'] = self.request.user
+        return kwargs
+
+    def form_valid(self, form):
+        return super().form_valid(form)
 
 class WatchlistRemoveEntry(View):
     template_name = 'stock_watch/watchlist_remove_entry.html'
@@ -97,6 +144,29 @@ class WatchListAPI:
                     # Return an error JSON response
                     return JsonResponse({'success': False, 'error': str(e)})
                 '''
+
+    class RemoveWatchlist(View):
+        def post(self, request):
+            watchlist=WatchList.objects.get(pk=request.GET.get('list'))
+            '''
+            if not request.user.is_authenticated:
+                return HttpResponse(status=401)
+            if request.user.pk != watchlist.user_id:
+                return HttpResponse(status=401)
+            '''
+            watchlist.delete()
+            return HttpResponse(status=200)
+    class AddWatchlist(View):
+        def post(self, request):
+            serializer = WatchListSerializer(data=request.data)
+
+            if not request.user.is_authenticated:
+                return HttpResponse(status_code=401)
+            if serializer.is_valid():
+                serializer.save()
+                return HttpResponse(status_code=201)
+            return HttpResponse(status_code=400)
+
 
 class StockView(DetailView):
     model = Stock
