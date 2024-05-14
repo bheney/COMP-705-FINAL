@@ -6,10 +6,11 @@ from django.views import View
 from django.views.generic import ListView
 from django.views.generic.base import TemplateView
 from django.views.generic.detail import DetailView
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import DeleteView
 
 from django.urls import reverse_lazy
 from django.http import HttpResponse, JsonResponse
+from django.utils import timezone
 
 from stock_watch.models import WatchList, Stock
 from stock_watch.forms import AddNewStockToWatchlist, AddNewWatchList
@@ -45,15 +46,34 @@ class UserWatchListsView(DetailView):
         return context
 
 
-class RemoveWatchList(View):
+class RemoveWatchList(DeleteView):
+    model = WatchList
     template_name = 'stock_watch/remove_watchlist.html'
     success_url = reverse_lazy('close_popup')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['list'] = self.object  # Pass the instance being deleted to the template
+        return context
+
+
+from django.views.generic import CreateView
+from django.urls import reverse_lazy
+from .forms import AddNewWatchList
 
 class AddWatchList(CreateView):
     model = WatchList
     form_class = AddNewWatchList
     template_name = 'stock_watch/add_watchlist.html'
     success_url = reverse_lazy('close_popup')
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user_instance'] = self.request.user
+        return kwargs
+
+    def form_valid(self, form):
+        return super().form_valid(form)
 
 class WatchlistRemoveEntry(View):
     template_name = 'stock_watch/watchlist_remove_entry.html'
@@ -128,14 +148,14 @@ class WatchListAPI:
     class RemoveWatchlist(View):
         def post(self, request):
             watchlist=WatchList.objects.get(pk=request.GET.get('list'))
-
+            '''
             if not request.user.is_authenticated:
-                return HttpResponse(status_code=401)
+                return HttpResponse(status=401)
             if request.user.pk != watchlist.user_id:
-                return HttpResponse(status_code=401)
-
+                return HttpResponse(status=401)
+            '''
             watchlist.delete()
-            return HttpResponse(status_code=200)
+            return HttpResponse(status=200)
     class AddWatchlist(View):
         def post(self, request):
             serializer = WatchListSerializer(data=request.data)

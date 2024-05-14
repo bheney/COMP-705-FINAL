@@ -1,10 +1,9 @@
 {% extends 'base.html' %}
 {% block header %}
     <script>
-        function popupRemoveWatchlistFromUser(user_pk, list_pk) {
+        function popupRemoveWatchlistFromUser(list_pk) {
             // Construct the URL by name and pass the path parameters as arguments
             var url = "{% url 'confirm_remove_watchlist' 0 %}";
-            url = url.replace('0', user_pk);
             url = url.replace('0', list_pk);
 
             // Open the window with the constructed URL
@@ -20,7 +19,7 @@
             url = url.replace('0', list_pk)
             window.open(
                 url,
-                'Add'
+                'Add',
                 'width=400,height=400'
             );
         }
@@ -42,7 +41,7 @@
                     <td><a href="{% url 'watchlist_edit' watchlist.id %}">{{ watchlist.title }}</a></td>
                     <td>{{ watchlist.created_at }}</td>
                     <td>
-                        <button class="remove-btn" onclick="popupRemoveWatchlistFromUser('{{ object.pk }}', '{{ watchlist.pk }}')">❌</button>
+                        <button class="remove-btn" onclick="popupRemoveWatchlistFromUser('{{ watchlist.pk }}')">❌</button>
                     </td>
                 </tr>
             {% endfor %}
