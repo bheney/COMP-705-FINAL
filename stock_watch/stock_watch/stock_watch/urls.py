@@ -27,10 +27,14 @@ urlpatterns = [
     path('confirm_stock_delete/<int:watchlist_pk>/<int:stock_pk>', views.WatchlistRemoveEntry.as_view(), name='confirm_remove_stock'),
     path('add_new_stock/<int:watchlist_pk>', views.WatchlistAddEntry.as_view() ,name='add_new_stock'),
     path('close_popup/', views.close_popup, name='close_popup'),
-    path('watchlists/<int:pk>/', views.UserWatchListsView.as_view(), name='')
+    path('watchlists/<int:pk>', views.UserWatchListsView.as_view(), name='user_watchlist_list'),
+    path('confirm_remove_watchlist/<int:pk>', views.RemoveWatchList.as_view(), name='confirm_remove_watchlist'),
+    path('add_watchlist/', views.AddWatchList.as_view(), name='add_new_watchlist'),
 
     # Internal API
     path('api/remove_stock/', views.WatchListAPI.RemoveStockFromWatchlist.as_view(), name='remove_stock'),
     path('api/add_stock/', views.WatchListAPI.AddStockToWatchlist.as_view(), name='add_stock'),
+    path('api/delete_watchlist/', views.WatchListAPI.RemoveWatchlist.as_view(), name='remove_watchlist'),
+    path('api/add_watchlist/', views.WatchListAPI.AddWatchlist.as_view(), name='add_watchlist'),
 ]
 
